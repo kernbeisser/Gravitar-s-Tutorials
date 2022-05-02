@@ -10,7 +10,7 @@ def read_pi():
 def visualize_pi(pi):
     lines = 10000
 
-    tu.speed(0)
+    # tu.speed(0)
     tu.tracer(False)
     tu.screensize(1800, 1200, 'black')
     tu.colormode(255)
@@ -21,11 +21,11 @@ def visualize_pi(pi):
         tu.setheading(rotation)
 
         r = random.randint(45, 255)
-        g = random.randint(145, 255)
+        g = random.randint(45, 255)
         b = random.randint(45, 255)
         tu.pencolor((r, g, b))
 
-        tu.forward(11)
+        tu.forward(7)
 
     tu.done()
 
