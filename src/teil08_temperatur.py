@@ -13,7 +13,7 @@ def get_temps():
     """
     tageswerte = defaultdict(list)
 
-    with open("./data/Teil_08_Temperatur_Draußen Temp_2.txt", 'r', encoding='utf-8') as f:
+    with open("./data/Teil_08_Temperatur.txt", 'r', encoding='utf-8') as f:
         for zeile in f:
             date, temp = zeile.strip().split('\t')
             datum = dt.datetime.strptime(date, '%d.%m.%Y %H:%M:%S').date()
