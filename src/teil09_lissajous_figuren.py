@@ -1,9 +1,10 @@
 import pygame as pg
 from dataclasses import dataclass
 from math import cos, sin
+import random
 
 resolution = 800
-columns = 5
+columns = 10
 dist = resolution // columns
 radius = (dist - 20) // 2
 
@@ -19,7 +20,7 @@ class Rotor:
     dot_y: int = 0
 
     def show(self, screen):
-        pg.draw.circle(screen, (0, 255, 0), (self.x, self.y), radius, 3)
+        pg.draw.circle(screen, (200, 200, 200), (self.x, self.y), radius, 3)
         pg.draw.circle(screen, (255, 255, 255), (self.dot_x, self.dot_y), 3)
 
         if self.horizontal:
@@ -45,8 +46,12 @@ class Lissajous:
         self.verticies.append(pos)
 
     def show(self, screen):
+        pg.draw.circle(screen, (255, 255, 255), self.verticies[-1], 2)
         if len(self.verticies) > 1:
-            pg.draw.lines(screen, (255, 0, 0), False, False, self.verticies, 1)
+            r = random.randint(75, 255)
+            g = random.randint(75, 255)
+            b = random.randint(75, 255)
+            pg.draw.lines(screen, (r, g, b), False, self.verticies, 1)
 
 
 matrix = [[0] * columns for _ in range(columns)]
@@ -58,9 +63,9 @@ def setup():
         x = dist * n + dist // 2
         y = dist // 2
         # horizontal circles
-        matrix[0][n] = Rotor(x, y, 0.05 * n, True)
+        matrix[0][n] = Rotor(x, y, 0.01 * n, True)
         # vertical circles
-        matrix[n][0] = Rotor(y, x, 0.05 * n, False)
+        matrix[n][0] = Rotor(y, x, 0.01 * n, False)
 
     for row in range(1, columns):
         for column in range(1, columns):
@@ -71,8 +76,23 @@ def draw(screen):
     for n in range(1, columns):
         matrix[0][n].update()
         matrix[n][0].update()
-        matrix[0][n].show(screen)
-        matrix[n][0].show(screen)
+        # matrix[0][n].show(screen)
+        # matrix[n][0].show(screen)
+
+    for row in range(1, columns):
+        for column in range(1, columns):
+            x = matrix[0][column].dot_x
+            y = matrix[row][0].dot_y
+            matrix[row][column].update([x, y])
+
+    for row in range(columns):
+        for column in range(columns):
+
+            # get rid of that circle at (0, 0)
+            if row == 0 and column == 0:
+                continue
+
+            matrix[row][column].show(screen)
 
 
 def game_loop():
