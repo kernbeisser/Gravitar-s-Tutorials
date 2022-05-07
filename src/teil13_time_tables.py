@@ -58,8 +58,8 @@ class TimeTables:
             self.screen3 = pg.font.SysFont('NotoSans', 72).render(f"{self.factor:6.1f}", False, (self.color))
             self.screen.blit(self.screen2, (0, 0))
             self.screen.blit(self.screen3, (3, 10))
-            self.factor += 0.002
-            self.clock.tick(30)
+            self.factor += 1
+            self.clock.tick(1)
             for event in pg.event.get():
                 if event.type == pg.QUIT or (
                     event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
@@ -67,7 +67,7 @@ class TimeTables:
                     go_on = False
 
             self.draw_lines()
-
+            pg.image.save(self.screen, f"time_tables{self.factor}.png")
             pg.display.flip()
 
         pg.quit()
