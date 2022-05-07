@@ -13,17 +13,20 @@ class TimeTables:
         self.radius = self.width // 2 - 16
         self.screen = None
         self.screen2 = None
+        self.screen3 = None
+        self.color = None
         self.clock = None
         self.section = 200
         self.angle = 2 * pi / self.section
         self.points = list()
-        self.factor = 1.0
+        self.factor = 0
 
     def setup(self):
         pg.init()
         self.screen = pg.display.set_mode((self.width, self.height))
         self.screen2 = pg.Surface((self.width, self.height))
         self.clock = pg.time.Clock()
+        self.color = pg.Color(150,150,150)
 
     def draw(self):
         pg.draw.circle(self.screen2, (255, 255, 255), self.centre, self.radius, 2)
@@ -38,10 +41,12 @@ class TimeTables:
             target_point = (i * self.factor) % self.section
             target_x = int(self.centre_x + self.radius * cos(self.angle * target_point + pi))
             target_y = int(self.centre_y + self.radius * sin(self.angle * target_point + pi))
-            r = random.randint(0, 255)
-            g = random.randint(0, 255)
-            b = random.randint(0, 255)
-            pg.draw.line(self.screen,(r, g, b), start_point, (target_x, target_y),2)
+            self.color.hsva = (360 / self.section * i, 100, 100)
+
+            # r = random.randint(0, 255)
+            # g = random.randint(0, 255)
+            # b = random.randint(0, 255)
+            pg.draw.line(self.screen, self.color, start_point, (target_x, target_y),2)
 
     def game_loop(self):
 
@@ -50,9 +55,11 @@ class TimeTables:
         
         go_on = True
         while go_on:
+            self.screen3 = pg.font.SysFont('NotoSans', 72).render(f"{self.factor:6.1f}", False, (self.color))
             self.screen.blit(self.screen2, (0, 0))
-            self.factor += 0.001
-            self.clock.tick(60)
+            self.screen.blit(self.screen3, (3, 10))
+            self.factor += 0.002
+            self.clock.tick(30)
             for event in pg.event.get():
                 if event.type == pg.QUIT or (
                     event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
