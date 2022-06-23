@@ -6,7 +6,7 @@ def teilnehmer() -> list:
     fake = faker.Faker()
     teilnehmer = []
     for _ in range(99):
-        
+
         teilnehmer.append(fake.name())
 
     # return "Constantin Peter Jan Simone Jörg Daniela Klaus Dirk Heike Elke".split()
